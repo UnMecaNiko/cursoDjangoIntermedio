@@ -20,6 +20,8 @@ En este segundo curso de la saga de Django analizarás los conceptos fundamental
 
 Los tests son funciones que nos ayudan a que nuestro código opere correctamente.
 
+Generalmente se testean modelos o vistas
+
 ### ¿Por qué debería hacer tests?
 
 Porque me permite evitar errores futuros a través de funciones que trabajan sobre las funciones principales de mi código.
@@ -29,7 +31,19 @@ Porque me permite evitar errores futuros a través de funciones que trabajan sob
 - Permite trabajar en equipo.
 
 
+### Test en nuestro proyecto
 
+```bash
+python3 manage.py shell
+```
+```py
+import datetime
+from django.utils import timezone
+from polls.models import Question
+q = Question(question_text="¿Quien es el mejor Course Director de Platzi?", 
+        pub_date=timezone.now()+datetime.timedelta(days=30) )
+
+```
 
 
 
