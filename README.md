@@ -30,20 +30,32 @@ Porque me permite evitar errores futuros a través de funciones que trabajan sob
 - Nos hace ver más profesionales.
 - Permite trabajar en equipo.
 
-
-### Test en nuestro proyecto
+### Primer test en nuestro proyecto
 
 ```bash
 python3 manage.py shell
 ```
 ```py
 import datetime
-from django.utils import timezone
-from polls.models import Question
-q = Question(question_text="¿Quien es el mejor Course Director de Platzi?", 
-        pub_date=timezone.now()+datetime.timedelta(days=30) )
 
+from django.test import TestCase
+from django.utils import timezone
+
+from .models import Question
+
+# Create your tests here
+class QuestionModelTests(TestCase):
+
+    def test_was_publish_recently_with_future_questions(self):
+        """was_published_recently returns False for question whose pub_date is in the future"""
+        time = timezone.now() + datetime.timedelta(days=30)
+        future_question = Question(
+            question_text="¿Quien es el mejor Couse Director de platzi?", pub_date=time)
+        self.assertIs(future_question.was_published_recently(), False)
 ```
+En la función del test definimos el código que se debe ejecutar para hacer la prueba, en este caso está comprendido en la sentencia `def`, para hacer la comprobación usamos el método `self.assertIs({tu resultado},{lo que esperas})`
+
+Luego, corremos la prueba con `python3 manage.py test polls`
 
 
 
