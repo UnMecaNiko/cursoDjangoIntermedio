@@ -57,8 +57,34 @@ En la función del test definimos el código que se debe ejecutar para hacer la 
 
 Luego, corremos la prueba con `python3 manage.py test polls`
 
+Podemos observar que el test falla, debemos corregir la función:
+*En el archivo `models.py`*
 
+```py
+def was_published_recently(self):
+    return timezone.now() >= self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+```
+Ahora, ya tenemos el test funcionando correctamente.
 
+### Pasos a seguir para los test
+
+1. Identificamos un problema.
+2. Creamos un test.
+3. Corremos el test.
+4. Arreglamos el problema.
+5. Corremos el test.
+
+Como ejercicio elaboramos una prueba para preguntas actuales, este es el resultado:
+```py
+    def test_was_publish_recently_with_present_questions(self):
+        """was_published_recently returns Ture for a quiestion whose pub_date
+            is in the present
+        """
+        time = timezone.now()
+        present_question = Question(
+            question_text="¿Quien es el mejor Couse Director de platzi?", pub_date=time)
+        self.assertIs(present_question.was_published_recently(), True)
+```
 
 
 
