@@ -90,7 +90,6 @@ Como ejercicio elaboramos una prueba para preguntas actuales, este es el resulta
 
 Una ejercicio para hacer testing de una view es por ejemplo revisar si hay o no preguntas. Para esto, se crea una clase que testea a las vistas y al modelo y luego se crea un método para el caso específico:
 *En el archivo `tests.py`*
-
 ```py
 class QuestionIndexViewTest(TestCase):
     def test_no_questions(self):
@@ -101,6 +100,33 @@ class QuestionIndexViewTest(TestCase):
         self.assertContains(response, "No polls are available.")
         self.assertQuerysetEqual(response.context["latest_question_list"], [])
 ```
+Estos test funcionan porque al momento de ejecutar el comando se crea una base de datos de cero, por lo que las pruebas no se corren sobre la base de datos ya creada. Esta después se elimina automáticamente.
+
+En los test es válido incumplir la filosofía dont repeat yourself porque se están haciendo pruebas, no desarrollando código
+
+Los test creados para probar futuras y pasadas preguntas dentro de la misma clase, en la vista index son:
+```py
+    def test_future_questions(self):
+        """
+        Question with a pub_date in the future will not be published 
+        """
+        create_question("Future Question", days=30)
+        response = self.client.get(reverse("polls:index"))
+        self.assertContains(response, "No polls are available.")
+        self.assertQuerysetEqual(response.context["latest_question_list"], [])
+
+    def test_past_questions(self):
+        """
+        Question with a pub_date in the past will be published 
+        """
+        question = create_question("Future Question", days=-30)
+        response = self.client.get(reverse("polls:index"))
+        self.assertQuerysetEqual(
+            response.context["latest_question_list"], [question])  # type: ignore
+```
+
+
+
 
 
 
