@@ -86,9 +86,30 @@ Como ejercicio elaboramos una prueba para preguntas actuales, este es el resulta
         self.assertIs(present_question.was_published_recently(), True)
 ```
 
+### Testing de views
+
+Una ejercicio para hacer testing de una view es por ejemplo revisar si hay o no preguntas. Para esto, se crea una clase que testea a las vistas y al modelo y luego se crea un método para el caso específico:
+*En el archivo `tests.py`*
+
+```py
+class QuestionIndexViewTest(TestCase):
+    def test_no_questions(self):
+        """If no question exist, an appropiate message is displayed"""
+        # estoy haciendo una peticion get http y se guarda en response
+        response = self.client.get(reverse("polls:index"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "No polls are available.")
+        self.assertQuerysetEqual(response.context["latest_question_list"], [])
+```
 
 
 
+
+# Helpful tips
+
+## Correr servidor de desarrollo
+
+`python3 manage.py runserver`
 
 
 
