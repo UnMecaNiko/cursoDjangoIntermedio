@@ -150,7 +150,17 @@ class QuestionAdmin(admin.ModelAdmin):
 admin.site.register(Question, QuestionAdmin) # los argumentos recibidos son 
 # el modelo de db y el modelo de vista
 ```
-
+También se pueden agregar filtros, campos de búsqueda y columnas adicionales para facilitar la navegación entre los datos:
+**En el archivo `admin.py` de polls**
+```py
+class QuestionAdmin(admin.ModelAdmin):
+    fields = ["pub_date", "question_text"]
+    inlines = [ChoiceInLine]
+    # columnas adicionales
+    list_display = ("question_text", "pub_date", "was_published_recently") 
+    list_filter = ["pub_date"]  # filtros
+    search_fields = ["question_text"]   # campos de busqueda
+```
 
 
 
