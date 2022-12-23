@@ -125,7 +125,31 @@ Los test creados para probar futuras y pasadas preguntas dentro de la misma clas
             response.context["latest_question_list"], [question])  # type: ignore
 ```
 
+## Django Admin
 
+Un feature interesante en el administrador de django puede ser el poder crear una pregunta e inmediatamente las respuestas.
+El administrador puede ser editado en el archivo `admin.py` de cada aplicación, en este caso, para lograr lo requerido se crea una clase que funciona como modelo de visualización.
+**En el archivo `admin.py` de polls**
+```py
+from django.contrib import admin
+
+# Register your models here.
+from .models import Question, Choice
+
+# clase para listar nuevas respuestas
+class ChoiceInLine(admin.StackedInline):
+    model = Choice
+    extra = 3
+
+
+class QuestionAdmin(admin.ModelAdmin):
+    fields = ["pub_date", "question_text"]
+    inlines = [ChoiceInLine] # se agrega la clase antes creada
+
+
+admin.site.register(Question, QuestionAdmin) # los argumentos recibidos son 
+# el modelo de db y el modelo de vista
+```
 
 
 
