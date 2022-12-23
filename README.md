@@ -184,4 +184,5 @@ class QuestionAdmin(admin.ModelAdmin):
 
 - [Django documentation](https://docs.djangoproject.com/en/3.2/)
 
+- [CSS Tools: Reset CSS](https://meyerweb.com/eric/tools/css/reset/)
 
